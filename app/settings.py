@@ -35,3 +35,25 @@ def load_settings() -> dict:
     result = DEFAULT_SETTINGS.copy()
     result.update(data)
     return result
+
+
+def save_settings(data: dict) -> str | None:
+    """Save data to settings.json with 2-space indent.
+    Writes to a temp file first, then renames (atomic on same filesystem).
+    Returns error message string on failure, None on success.
+    Original file is preserved if write fails."""
+    path = get_settings_path()
+    content = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+
+    temp_path = path.with_suffix(".tmp")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temp_path.write_text(content, encoding="utf-8")
+        temp_path.replace(path)
+        return None
+    except OSError as e:
+        try:
+            temp_path.unlink(missing_ok=True)
+        except OSError:
+            pass
+        return str(e)
