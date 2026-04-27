@@ -3,27 +3,37 @@
 
 import sys
 import os
+import ctypes
 import webview
 from app.api import Api
+
+kernel32 = ctypes.windll.kernel32
+
+
+def _pid_exists(pid):
+    """Check if a process with given PID exists on Windows."""
+    PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+    handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+    if handle:
+        kernel32.CloseHandle(handle)
+        return True
+    return False
 
 
 def is_already_running():
     """Check if another instance is running using a lock file."""
     lock_path = os.path.join(os.path.expanduser("~"), ".claude", ".settings-manager.lock")
     try:
-        # Try to create lock file exclusively
         if os.path.exists(lock_path):
-            # Check if the PID in the lock file is still alive
             with open(lock_path, "r") as f:
                 old_pid = f.read().strip()
             if old_pid:
                 try:
-                    os.kill(int(old_pid), 0)  # Signal 0 = check existence
-                    return True  # Process exists
-                except (OSError, ValueError):
-                    pass  # Stale lock file
+                    if _pid_exists(int(old_pid)):
+                        return True
+                except ValueError:
+                    pass
             os.remove(lock_path)
-        # Write our PID
         with open(lock_path, "w") as f:
             f.write(str(os.getpid()))
         return False
