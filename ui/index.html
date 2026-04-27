@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Settings Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <label for="profile-select">Profile:</label>
+            <select id="profile-select">
+                <option value="">-- 无已保存配置 --</option>
+            </select>
+            <button id="btn-save-profile" class="btn btn-secondary">保存为 Profile</button>
+            <button id="btn-update-profile" class="btn btn-secondary">更新</button>
+            <button id="btn-delete-profile" class="btn btn-danger">删除</button>
+        </div>
+        <div class="toolbar-right">
+            <button id="btn-save" class="btn btn-primary">保存配置</button>
+        </div>
+    </div>
+
+    <!-- Connection Config -->
+    <div class="section">
+        <h3 class="section-title">🔗 连接配置</h3>
+        <div class="form-grid">
+            <label for="f-base-url">Base URL</label>
+            <input type="text" id="f-base-url" data-env="ANTHROPIC_BASE_URL">
+
+            <label for="f-auth-token">Auth Token</label>
+            <div class="token-wrapper">
+                <input type="password" id="f-auth-token" data-env="ANTHROPIC_AUTH_TOKEN">
+                <button id="btn-toggle-token" class="btn-icon" title="显示/隐藏令牌">👁</button>
+            </div>
+
+            <label for="f-opus-model">Opus Model</label>
+            <input type="text" id="f-opus-model" data-env="ANTHROPIC_DEFAULT_OPUS_MODEL">
+
+            <label for="f-sonnet-model">Sonnet Model</label>
+            <input type="text" id="f-sonnet-model" data-env="ANTHROPIC_DEFAULT_SONNET_MODEL">
+
+            <label for="f-haiku-model">Haiku Model</label>
+            <input type="text" id="f-haiku-model" data-env="ANTHROPIC_DEFAULT_HAIKU_MODEL">
+
+            <label for="f-timeout">Timeout (ms)</label>
+            <input type="text" id="f-timeout" data-env="API_TIMEOUT_MS" inputmode="numeric">
+        </div>
+    </div>
+
+    <!-- Preference Switches -->
+    <div class="section">
+        <h3 class="section-title">⚙️ 偏好开关</h3>
+        <div class="checkbox-row">
+            <label><input type="checkbox" id="f-disable-telemetry" data-env="DISABLE_TELEMETRY"> 禁用遥测</label>
+            <label><input type="checkbox" id="f-disable-error" data-env="DISABLE_ERROR_REPORTING"> 禁用错误上报</label>
+            <label><input type="checkbox" id="f-disable-traffic" data-env="CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"> 禁用非必要流量</label>
+        </div>
+    </div>
+
+    <!-- Plugins & Marketplaces -->
+    <div class="section">
+        <h3 class="section-title">🧩 插件与市场</h3>
+        <div id="plugins-container" class="checkbox-row">
+            <!-- Populated dynamically -->
+        </div>
+        <div id="marketplaces-container" class="marketplace-list">
+            <!-- Populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Dialog overlay -->
+    <div id="dialog-overlay" class="dialog-overlay hidden">
+        <div class="dialog-box">
+            <p id="dialog-message"></p>
+            <div class="dialog-input-wrapper hidden">
+                <input type="text" id="dialog-input" placeholder="输入 Profile 名称">
+            </div>
+            <div class="dialog-buttons">
+                <button id="dialog-cancel" class="btn btn-secondary">取消</button>
+                <button id="dialog-confirm" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
