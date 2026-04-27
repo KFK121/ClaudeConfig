@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openspec-cn list:*)",
+      "Bash(openspec-cn new:*)",
+      "Bash(openspec-cn status:*)",
+      "Bash(openspec-cn instructions:*)",
+      "Bash(bash:*)",
+      "Bash(cat \"E:/A_PJ_202603/ClaudeConfig/.superpowers/brainstorm/\"*/state/server-info)",
+      "Bash(pip show:*)"
+    ]
+  }
+}

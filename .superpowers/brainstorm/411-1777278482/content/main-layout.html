@@ -1,0 +1,89 @@
+<h2>主界面布局预览</h2>
+<p class="subtitle">基于设计文档的三区布局 + Profile 工具栏</p>
+
+<div class="mockup">
+  <div class="mockup-header">Preview: Claude Settings Manager</div>
+  <div class="mockup-body" style="padding: 0;">
+
+    <!-- Toolbar -->
+    <div style="background: #2d2d2d; padding: 10px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #444;">
+      <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+        <span style="color: #aaa; font-size: 13px;">Profile:</span>
+        <div style="background: #3d3d3d; border: 1px solid #555; border-radius: 4px; padding: 5px 10px; color: #fff; font-size: 13px; min-width: 180px; display: flex; justify-content: space-between;">
+          <span>火山引擎 ARK</span>
+          <span style="color: #888">▼</span>
+        </div>
+        <button class="mock-button" style="margin: 0; padding: 5px 12px; font-size: 12px;">保存为 Profile</button>
+        <button class="mock-button" style="margin: 0; padding: 5px 12px; font-size: 12px;">更新</button>
+        <button class="mock-button" style="margin: 0; padding: 5px 12px; font-size: 12px; color: #e55;">删除</button>
+      </div>
+      <button class="mock-button" style="margin: 0; padding: 6px 20px; font-size: 13px; background: #2563eb; color: #fff; border: none;">保存配置</button>
+    </div>
+
+    <div style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+
+      <!-- Section 1: Connection Config -->
+      <div style="background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; padding: 16px;">
+        <h3 style="margin: 0 0 12px 0; color: #e0e0e0; font-size: 14px;">🔗 连接配置</h3>
+        <div style="display: grid; grid-template-columns: 160px 1fr; gap: 10px; align-items: center;">
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Base URL</label>
+          <input class="mock-input" style="width: 100%;" value="https://ark.cn-beijing.volces.com/api/coding">
+
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Auth Token</label>
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <input class="mock-input" style="flex: 1;" value="ark-0412•••••••••••••••" type="password">
+            <button class="mock-button" style="margin: 0; padding: 4px 8px; font-size: 11px;">👁</button>
+          </div>
+
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Opus Model</label>
+          <input class="mock-input" style="width: 100%;" value="GLM-5.1">
+
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Sonnet Model</label>
+          <input class="mock-input" style="width: 100%;" value="GLM-5.1">
+
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Haiku Model</label>
+          <input class="mock-input" style="width: 100%;" value="GLM-5.1">
+
+          <label style="color: #aaa; font-size: 13px; text-align: right;">Timeout (ms)</label>
+          <input class="mock-input" style="width: 100%;" value="3000000">
+        </div>
+      </div>
+
+      <!-- Section 2: Preferences -->
+      <div style="background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; padding: 16px;">
+        <h3 style="margin: 0 0 12px 0; color: #e0e0e0; font-size: 14px;">⚙️ 偏好开关</h3>
+        <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #ccc; font-size: 13px;">
+            <input type="checkbox" checked> 禁用遥测
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; color: #ccc; font-size: 13px;">
+            <input type="checkbox" checked> 禁用错误上报
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; color: #ccc; font-size: 13px;">
+            <input type="checkbox" checked> 禁用非必要流量
+          </label>
+        </div>
+      </div>
+
+      <!-- Section 3: Plugins & Marketplaces -->
+      <div style="background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; padding: 16px;">
+        <h3 style="margin: 0 0 12px 0; color: #e0e0e0; font-size: 14px;">🧩 插件与市场</h3>
+        <div style="margin-bottom: 12px;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #ccc; font-size: 13px;">
+            <input type="checkbox" checked> superpowers@claude-plugins-official
+          </label>
+        </div>
+        <div style="border-top: 1px solid #3a3a3a; padding-top: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; color: #ccc; font-size: 13px;">
+            <span style="color: #888;">📦</span>
+            <span><strong>superpowers-marketplace</strong></span>
+            <span style="color: #888;">github.com/obra/superpowers-marketplace</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<p style="color: #888; font-size: 13px; margin-top: 16px; text-align: center;">暗色主题 · 中文界面 · 三区卡片布局</p>
