@@ -147,7 +147,7 @@ async function handleSave() {
     const resp = await api.save_settings(data);
     if (resp.success) {
         currentSettings = data;
-        showToast("配置已保存", "success");
+        showToast("配置已生效", "success");
     } else {
         showToast("保存失败: " + resp.error, "error");
     }
@@ -159,7 +159,7 @@ async function refreshProfileSelect() {
     const resp = await api.list_profiles();
     const select = document.getElementById("profile-select");
     // Keep first placeholder option
-    select.innerHTML = '<option value="">-- 无已保存配置 --</option>';
+    select.innerHTML = '';
     if (resp.success && resp.data.length > 0) {
         resp.data.forEach(p => {
             const opt = document.createElement("option");
