@@ -147,6 +147,7 @@ async function handleSave() {
     const resp = await api.save_settings(data);
     if (resp.success) {
         currentSettings = data;
+        document.getElementById("profile-select").value = "__current__";
         showToast("配置已生效", "success");
     } else {
         showToast("保存失败: " + resp.error, "error");
@@ -158,8 +159,8 @@ async function handleSave() {
 async function refreshProfileSelect() {
     const resp = await api.list_profiles();
     const select = document.getElementById("profile-select");
-    // Keep first placeholder option
-    select.innerHTML = '';
+    // Add "当前配置" option at the top
+    select.innerHTML = '<option value="__current__">当前配置</option>';
     if (resp.success && resp.data.length > 0) {
         resp.data.forEach(p => {
             const opt = document.createElement("option");
@@ -169,12 +170,26 @@ async function refreshProfileSelect() {
             select.appendChild(opt);
         });
     }
+    // Default to "当前配置"
+    select.value = "__current__";
 }
 
-function handleProfileSelect() {
+async function handleProfileSelect() {
     const select = document.getElementById("profile-select");
     const selected = select.options[select.selectedIndex];
     if (!selected || !selected.value) return;
+
+    if (selected.value === "__current__") {
+        // Read from settings.json in real-time
+        const resp = await api.load_settings();
+        if (!resp.success) {
+            showToast(resp.error, "error");
+            return;
+        }
+        currentSettings = resp.data;
+        renderSettings(currentSettings);
+        return;
+    }
 
     const profileEnv = JSON.parse(selected.dataset.env);
     // Only fill connection config fields (not switches, timeout, plugins)
