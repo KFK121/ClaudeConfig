@@ -7,3 +7,4 @@ dist/
 *.exe
 .claude/
 .superpowers/
+openspec/
