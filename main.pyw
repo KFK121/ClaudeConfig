@@ -3,56 +3,53 @@
 
 import sys
 import os
-import ctypes
+import msvcrt
 import webview
 from app.api import Api
 
-kernel32 = ctypes.windll.kernel32
-
-
-def _pid_exists(pid):
-    """Check if a process with given PID exists on Windows."""
-    PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
-    handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
-    if handle:
-        kernel32.CloseHandle(handle)
-        return True
-    return False
+LOCK_PATH = os.path.join(os.path.expanduser("~"), ".claude", ".settings-manager.lock")
+_lock_file = None
 
 
 def is_already_running():
-    """Check if another instance is running using a lock file."""
-    lock_path = os.path.join(os.path.expanduser("~"), ".claude", ".settings-manager.lock")
+    """Check if another instance is running using a file lock.
+    Uses msvcrt.locking for an exclusive lock on Windows.
+    The lock is automatically released when the process exits."""
+    global _lock_file
     try:
-        if os.path.exists(lock_path):
-            with open(lock_path, "r") as f:
-                old_pid = f.read().strip()
-            if old_pid:
-                try:
-                    if _pid_exists(int(old_pid)):
-                        return True
-                except ValueError:
-                    pass
-            os.remove(lock_path)
-        with open(lock_path, "w") as f:
-            f.write(str(os.getpid()))
+        os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+        _lock_file = open(LOCK_PATH, "w")
+        # Try to acquire an exclusive (non-blocking) lock
+        msvcrt.locking(_lock_file.fileno(), msvcrt.LK_NBLCK, 1)
+        _lock_file.write(str(os.getpid()))
+        _lock_file.flush()
         return False
-    except OSError:
-        return False
+    except (OSError, IOError):
+        # Lock is held by another instance
+        if _lock_file:
+            _lock_file.close()
+            _lock_file = None
+        return True
 
 
-def remove_lock():
-    """Remove the lock file on exit."""
-    lock_path = os.path.join(os.path.expanduser("~"), ".claude", ".settings-manager.lock")
+def release_lock():
+    """Release the file lock on exit."""
+    global _lock_file
+    if _lock_file:
+        try:
+            msvcrt.locking(_lock_file.fileno(), msvcrt.LK_UNLCK, 1)
+            _lock_file.close()
+        except (OSError, IOError):
+            pass
+        _lock_file = None
     try:
-        os.remove(lock_path)
+        os.remove(LOCK_PATH)
     except OSError:
         pass
 
 
 def main():
     if is_already_running():
-        print("Another instance is already running.")
         sys.exit(0)
 
     try:
@@ -69,7 +66,7 @@ def main():
         )
         webview.start()
     finally:
-        remove_lock()
+        release_lock()
 
 
 if __name__ == "__main__":
